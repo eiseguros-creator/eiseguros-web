@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de administración — EISeguros</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="assets/brand/estrella-eiseguros.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #06081F; --panel: rgba(255,255,255,0.055); --border: rgba(255,255,255,0.14);
+    --text: #EDF0FC; --soft: #A9B2DA; --rosa: #E5197D; --rosa-l: #F86BB4; --ok: #25D366;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Instrument Sans", sans-serif; color: var(--text);
+    background: var(--ink) url("assets/img/silk-bg-alt.jpg") center / cover fixed;
+    height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+  }
+  body::before { content:""; position:fixed; inset:0; background:rgba(6,8,31,0.72); pointer-events:none; }
+  header, main { position: relative; z-index: 1; }
+  header {
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    padding: 0.75rem 1.2rem;
+    background: rgba(9,12,40,0.6); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  header img.logo { height: 32px; }
+  .tag {
+    font-size: 0.64rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--soft); border: 1px solid var(--border); border-radius: 999px; padding: 0.28rem 0.75rem;
+  }
+  select, button, input, textarea, label.filebtn {
+    font: inherit; font-size: 0.9rem;
+    border-radius: 10px; border: 1px solid var(--border);
+    background: var(--panel); color: var(--text);
+    padding: 0.5rem 0.9rem;
+    backdrop-filter: blur(10px);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  select, button { border-radius: 999px; font-weight: 600; cursor: pointer; }
+  select:hover, button:hover { background: rgba(255,255,255,0.12); }
+  select option { background: #0A0D2B; }
+  button.primary { background: linear-gradient(135deg, var(--rosa), #C40E67); border: 0; color: #fff; }
+  button.active { border-color: var(--rosa-l); color: var(--rosa-l); }
+  button.danger { border-color: rgba(255,90,90,0.5); color: #ff8f8f; }
+  .spacer { flex: 1; }
+  .hint { font-size: 0.78rem; color: var(--soft); width: 100%; margin: 0; }
+  .hint strong { color: var(--rosa-l); font-weight: 600; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 0.5rem; }
+  .tab { border-radius: 999px; }
+  .tab[aria-selected="true"] { background: linear-gradient(135deg, var(--rosa), #C40E67); border: 0; color: #fff; }
+
+  main { flex: 1; padding: 1rem 1.2rem 1.2rem; min-height: 0; }
+  .pane { height: 100%; display: none; }
+  .pane.on { display: block; }
+
+  /* Editor de páginas */
+  #frameWrap {
+    height: 100%; border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border); box-shadow: 0 24px 60px -24px rgba(0,0,0,0.8);
+    background: #0A0D2B; position: relative;
+  }
+  iframe { width: 100%; height: 100%; border: 0; }
+  #modeBadge {
+    position: absolute; top: 0.9rem; right: 0.9rem; z-index: 5;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 0.4rem 0.9rem; border-radius: 999px;
+    background: rgba(6,8,31,0.85); border: 1px solid var(--border); color: var(--soft);
+  }
+  #modeBadge.text { color: #7FD8FF; border-color: rgba(127,216,255,0.4); }
+  #modeBadge.img { color: var(--rosa-l); border-color: rgba(248,107,180,0.4); }
+
+  /* Novedades */
+  .posts-layout { height: 100%; display: grid; grid-template-columns: 320px 1fr; gap: 1rem; min-height: 0; }
+  .card {
+    background: rgba(9,12,40,0.55); backdrop-filter: blur(18px);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 1.1rem; overflow: auto; min-height: 0;
+  }
+  .card h2 { margin: 0 0 0.9rem; font-size: 0.95rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); font-weight: 600; }
+  .post-item {
+    padding: 0.75rem 0.9rem; border-radius: 12px; cursor: pointer;
+    border: 1px solid transparent; margin-bottom: 0.5rem;
+    background: rgba(255,255,255,0.04);
+  }
+  .post-item:hover { background: rgba(255,255,255,0.09); }
+  .post-item.sel { border-color: var(--rosa-l); background: rgba(229,25,125,0.14); }
+  .post-item .t { font-weight: 600; font-size: 0.94rem; }
+  .post-item .d { font-size: 0.76rem; color: var(--soft); margin-top: 0.15rem; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  .field { margin-bottom: 0.9rem; }
+  .field label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.35rem; color: var(--soft); }
+  .field input, .field textarea, .field select { width: 100%; border-radius: 10px; }
+  .field textarea { resize: vertical; min-height: 90px; font-family: inherit; }
+  .field .help { font-size: 0.72rem; color: var(--soft); margin-top: 0.25rem; }
+  .row-btns { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; }
+  .filepick { display: flex; gap: 0.5rem; align-items: center; }
+  .filepick input[type=text] { flex: 1; }
+
+  #toast {
+    position: fixed; bottom: 1.2rem; left: 50%; translate: -50% 0; z-index: 50;
+    background: rgba(9,12,40,0.94); border: 1px solid var(--border);
+    padding: 0.8rem 1.3rem; border-radius: 12px; font-size: 0.9rem;
+    opacity: 0; visibility: hidden; transition: opacity 0.25s; max-width: 90vw;
+  }
+  #toast.show { opacity: 1; visibility: visible; }
+  @media (max-width: 900px) { .posts-layout { grid-template-columns: 1fr; } .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <img class="logo" src="assets/brand/logo-eiseguros.png" alt="EISeguros">
+  <span class="tag">Panel de administración</span>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" id="tabPages" role="tab" aria-selected="true">📄 Páginas</button>
+    <button class="tab" id="tabPosts" role="tab" aria-selected="false">📰 Novedades</button>
+  </div>
+
+  <!-- Controles de Páginas -->
+  <span id="pagesCtl" style="display:contents;">
+    <select id="pageSelect" aria-label="Página a editar">
+      <option value="index.html">Inicio</option>
+      <option value="empresas.html">Seguros Empresariales</option>
+      <option value="personas.html">Seguros Personales (hub)</option>
+      <option value="seguros-hogar.html">Hogar</option>
+      <option value="seguros-vida.html">Vida y Familia</option>
+      <option value="seguros-salud.html">Gastos Médicos</option>
+      <option value="seguros-autos.html">Autos</option>
+      <option value="novedades.html">Novedades (página)</option>
+      <option value="contacto.html">Contacto</option>
+    </select>
+    <button id="modeText" class="active">✏️ Texto</button>
+    <button id="modeImg">🖼️ Imágenes</button>
+    <span class="spacer"></span>
+    <button id="saveDraft">Guardar borrador</button>
+    <button id="dropDraft">Descartar</button>
+    <button id="exportBtn" class="primary">⬇ Descargar HTML</button>
+  </span>
+
+  <!-- Controles de Novedades -->
+  <span id="postsCtl" style="display:none;">
+    <button id="newPost">＋ Nueva publicación</button>
+    <span class="spacer"></span>
+    <button id="exportPosts" class="primary">⬇ Descargar posts.json</button>
+  </span>
+
+  <p class="hint" id="hintPages">
+    <strong>Texto:</strong> haz clic sobre cualquier texto y escribe.
+    <strong>Imágenes:</strong> haz clic sobre una imagen y elige el archivo nuevo.
+    Al descargar, reemplaza el archivo original del sitio para publicar los cambios.
+  </p>
+  <p class="hint" id="hintPosts" style="display:none;">
+    Crea publicaciones con <strong>texto, video, flyer y PDF</strong>. Al terminar descarga <strong>posts.json</strong>
+    y colócalo en <code>assets/data/</code>; sube los PDFs a <code>assets/docs/</code> y las imágenes a <code>assets/img/</code>.
+  </p>
+</header>
+
+<main>
+  <!-- PANEL: PÁGINAS -->
+  <div class="pane on" id="panePages">
+    <div id="frameWrap">
+      <span id="modeBadge" class="text">Modo: texto</span>
+      <iframe id="frame" title="Editor de página"></iframe>
+    </div>
+  </div>
+
+  <!-- PANEL: NOVEDADES -->
+  <div class="pane" id="panePosts">
+    <div class="posts-layout">
+      <div class="card">
+        <h2>Publicaciones</h2>
+        <div id="postList"></div>
+      </div>
+      <div class="card">
+        <h2 id="editorTitle">Editor</h2>
+        <div id="editor">
+          <div class="grid2">
+            <div class="field">
+              <label for="p-titulo">Título</label>
+              <input id="p-titulo" type="text" placeholder="Ej. Nuevas coberturas para flotillas 2026">
+            </div>
+            <div class="field">
+              <label for="p-fecha">Fecha</label>
+              <input id="p-fecha" type="date">
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="p-categoria">Categoría</label>
+              <input id="p-categoria" type="text" list="cats" placeholder="Aviso">
+              <datalist id="cats">
+                <option>Aviso</option><option>Empresas</option><option>Personales</option>
+                <option>Guía</option><option>Video</option><option>Campaña</option>
+              </datalist>
+            </div>
+            <div class="field">
+              <label for="p-video">Video (URL de YouTube o Vimeo)</label>
+              <input id="p-video" type="url" placeholder="https://youtu.be/…">
+              <div class="help">Se incrusta automáticamente en la publicación.</div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="p-resumen">Resumen (aparece en la tarjeta)</label>
+            <textarea id="p-resumen" rows="2" placeholder="Una o dos líneas que resuman la publicación."></textarea>
+          </div>
+          <div class="field">
+            <label for="p-texto">Texto completo</label>
+            <textarea id="p-texto" rows="7" placeholder="Contenido de la publicación. Deja una línea en blanco para separar párrafos."></textarea>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="p-imagen">Flyer / imagen</label>
+              <div class="filepick">
+                <input id="p-imagen" type="text" placeholder="assets/img/mi-flyer.jpg">
+                <label class="filebtn" style="cursor:pointer;">Elegir…<input type="file" id="fileImg" accept="image/*" hidden></label>
+              </div>
+              <div class="help">Al elegir un archivo se descarga listo para subir a <code>assets/img/</code>.</div>
+            </div>
+            <div class="field">
+              <label for="p-pdf">PDF adjunto</label>
+              <div class="filepick">
+                <input id="p-pdf" type="text" placeholder="assets/docs/mi-documento.pdf">
+                <label class="filebtn" style="cursor:pointer;">Elegir…<input type="file" id="filePdf" accept="application/pdf" hidden></label>
+              </div>
+              <div class="help">Se descarga para que lo subas a <code>assets/docs/</code>.</div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="p-pdfTitulo">Texto del botón de descarga (opcional)</label>
+            <input id="p-pdfTitulo" type="text" placeholder="Descargar folleto (PDF)">
+          </div>
+          <div class="row-btns">
+            <button id="savePost" class="primary">Guardar publicación</button>
+            <button id="previewPost">Ver en el sitio</button>
+            <button id="deletePost" class="danger">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="toast" role="status"></div>
+<input type="file" id="imgInput" accept="image/*" hidden>
+
+<script src="assets/js/admin.js"></script>
+</body>
+</html>

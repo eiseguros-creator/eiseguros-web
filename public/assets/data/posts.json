@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "id": "bienvenida-novedades",
+      "fecha": "2026-08-28",
+      "categoria": "Aviso",
+      "titulo": "Bienvenido a Novedades de EISeguros",
+      "resumen": "Aquí publicaremos información pertinente para empresas y familias: avisos de las aseguradoras, guías prácticas, videos explicativos y material descargable.",
+      "texto": "Esta sección se actualiza de forma constante con información útil para tomar decisiones inteligentes de protección.\n\nEncontrarás avisos importantes de las aseguradoras, recordatorios de renovación, guías prácticas sobre coberturas, flyers de campañas vigentes y videos explicativos.\n\nSi tienes dudas sobre cualquier publicación, escríbenos por WhatsApp o al correo y con gusto te asesoramos.",
+      "imagen": "assets/img/asesoria-empresarial.jpg",
+      "video": "",
+      "pdf": "",
+      "pdfTitulo": ""
+    }
+  ]
+}
