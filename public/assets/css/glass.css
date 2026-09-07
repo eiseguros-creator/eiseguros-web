@@ -806,12 +806,33 @@ body.bg-ice {
 .post-detail .post-text { margin-top: 1.2rem; }
 
 /* Ventanillas gemelas de la sección de seguros personales:
-   mismo formato en ambas, con el ícono arriba y el contenido alineado. */
+   mismo formato en ambas — contenido centrado verticalmente, sin huecos muertos. */
 .duo-card {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 1.2rem;
+  justify-content: center;
+  gap: 1.4rem;
 }
-.duo-card .icon-decintel { margin-bottom: .2rem; }
-.duo-card .check-list { flex: 1; }
+.duo-card .icon-decintel { margin-bottom: 0; }
+.duo-card > h3 { line-height: 1.25; }
+.duo-card .check-list { gap: 1rem; }
+
+/* Cada línea: nombre del seguro que NO se parte + descripción que fluye */
+.pl-item { display: block; }
+.pl-name {
+  font-weight: 600;
+  color: var(--text-light);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.pl-name:hover { color: var(--rosa-300); border-bottom-color: var(--rosa-300); }
+.pl-desc { color: var(--text-dark-soft); }
+.pl-desc::before { content: " — "; }
+
+@media (max-width: 520px) {
+  .pl-item { display: grid; gap: .1rem; }
+  .pl-desc::before { content: ""; }
+  .pl-desc { font-size: .95rem; }
+}
