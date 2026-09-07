@@ -323,7 +323,7 @@
 
   document.getElementById("previewPost").addEventListener("click", function () {
     if (!selId) { say("Selecciona una publicación primero."); return; }
-    window.open("novedades.html?post=" + encodeURIComponent(selId), "_blank");
+    window.open("tipseguros.html?post=" + encodeURIComponent(selId), "_blank");
   });
 
   /* ---------- Adjuntos ---------- */

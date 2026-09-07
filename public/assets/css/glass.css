@@ -804,3 +804,14 @@ body.bg-ice {
 .post-detail .flyer,
 .post-detail .video-wrap { width: 100%; }
 .post-detail .post-text { margin-top: 1.2rem; }
+
+/* Ventanillas gemelas de la sección de seguros personales:
+   mismo formato en ambas, con el ícono arriba y el contenido alineado. */
+.duo-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1.2rem;
+}
+.duo-card .icon-decintel { margin-bottom: .2rem; }
+.duo-card .check-list { flex: 1; }

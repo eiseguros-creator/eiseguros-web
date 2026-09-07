@@ -104,7 +104,7 @@
       if (s !== detail && !s.querySelector(".cta-band")) s.hidden = true;
     });
     detail.hidden = false;
-    document.title = p.titulo + " — Novedades | EISeguros";
+    document.title = p.titulo + " — TipSeguros | EISeguros";
 
     var html =
       '<div class="post-meta" style="margin-bottom:1rem;">' +
