@@ -1,0 +1,93 @@
+# Panel de publicación de TipSeguros (Decap CMS)
+# Enrique entra a /admin/, escribe la publicación y al guardar se publica sola.
+
+backend:
+  name: github
+  repo: eiseguros-creator/eiseguros-web
+  branch: main
+  base_url: https://eiseguros.netlify.app
+  auth_endpoint: /.netlify/functions/auth
+
+locale: es
+publish_mode: simple
+
+# Carpeta donde se guardan las imágenes que suba desde el panel
+media_folder: "public/assets/img"
+public_folder: "/assets/img"
+
+site_url: https://eiseguros.netlify.app
+display_url: https://eiseguros.netlify.app
+logo_url: /assets/brand/logo-eiseguros.png
+
+collections:
+  - name: tips
+    label: TipSeguros
+    label_singular: publicación
+    description: >-
+      Publicaciones de TipSeguros. Al guardar, la publicación aparece en el sitio
+      en un par de minutos.
+    folder: content/tips
+    create: true
+    delete: true
+    extension: json
+    format: json
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{fecha}} · {{titulo}}"
+    sortable_fields: [fecha, titulo]
+    fields:
+      - label: Título
+        name: titulo
+        widget: string
+        hint: El encabezado de la publicación.
+
+      - label: Fecha
+        name: fecha
+        widget: datetime
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+        hint: Las publicaciones se ordenan de la más reciente a la más antigua.
+
+      - label: Categoría
+        name: categoria
+        widget: select
+        default: Aviso
+        options: [Aviso, Empresas, Personales, Guía, Video, Campaña]
+        hint: Sirve para filtrar las publicaciones en el sitio.
+
+      - label: Resumen
+        name: resumen
+        widget: text
+        hint: Una o dos líneas. Es lo que se ve en la tarjeta del listado.
+
+      - label: Texto completo
+        name: texto
+        widget: text
+        required: false
+        hint: Deja una línea en blanco entre párrafos.
+
+      - label: Flyer o imagen
+        name: imagen
+        widget: image
+        required: false
+        hint: Se usa como portada de la tarjeta y se muestra dentro de la publicación.
+
+      - label: Video (YouTube o Vimeo)
+        name: video
+        widget: string
+        required: false
+        hint: "Pega la liga del video, por ejemplo https://youtu.be/xxxxx. Se incrusta sola."
+
+      - label: PDF adjunto
+        name: pdf
+        widget: file
+        required: false
+        media_folder: "../../public/assets/docs"
+        public_folder: "/assets/docs"
+        hint: Folleto, aviso o documento que la gente pueda descargar.
+
+      - label: Texto del botón de descarga
+        name: pdfTitulo
+        widget: string
+        required: false
+        hint: "Opcional. Por ejemplo: Descargar folleto de flotillas."

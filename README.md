@@ -9,7 +9,8 @@ Dominio previsto: **estrategiasinteligentesdeseguros.com**
 
 | Carpeta | Qué contiene | ¿Se publica? |
 |---|---|---|
-| `public/` | El sitio: páginas, imágenes, estilos y el panel de administración | **Sí** |
+| `public/` | El sitio: páginas, imágenes, estilos y los dos paneles | **Sí** |
+| `content/tips/` | Publicaciones de TipSeguros, una por archivo. Las crea el panel `/admin/` | No (se convierten en `posts.json` al desplegar) |
 | `docs/` | Auditoría del sitio Wix anterior, especificación de diseño y bitácora de cambios | No |
 | `archivo/` | Página de testimonios con referencias de muestra, guardada por si más adelante hay testimonios reales | No |
 
@@ -26,18 +27,24 @@ Netlify publica únicamente `public/`, según lo indicado en `netlify.toml`.
 | `seguros-vida.html` | Vida y Familia |
 | `seguros-salud.html` | Gastos Médicos Mayores |
 | `seguros-autos.html` | Autos |
-| `novedades.html` | Novedades |
+| `tipseguros.html` | TipSeguros |
 | `contacto.html` | Contacto |
-| `admin.html` | Panel de administración |
+| `admin/` | **Panel de publicación de TipSeguros** (Decap CMS) |
+| `editor.html` | Editor de textos e imágenes de las páginas |
 
-## Panel de administración
+## Paneles
 
-Disponible en `/admin.html`. Permite dos cosas:
+### `/admin/` — publicar en TipSeguros
+Es el panel que usa EISeguros para escribir y publicar. Se entra con la cuenta de GitHub,
+se llena el formulario (título, fecha, categoría, resumen, texto, imagen, video y PDF) y al
+guardar **la publicación queda en el sitio en un par de minutos**, sin descargar ni subir archivos.
 
-1. **Editar páginas** — cambiar textos y reemplazar imágenes de cualquier página. Al terminar se descarga el archivo modificado, que hay que subir al repositorio para publicarlo.
-2. **Novedades** — crear, editar y borrar publicaciones (texto, video de YouTube o Vimeo, flyer y PDF). Al terminar se descarga `posts.json`, que se coloca en `public/assets/data/`.
+Cada publicación se guarda como un archivo en `content/tips/`. Al desplegar, `build-posts.mjs`
+las convierte en `public/assets/data/posts.json`, que es lo que lee la página de TipSeguros.
 
-Los PDFs van en `public/assets/docs/` y las imágenes en `public/assets/img/`.
+### `/editor.html` — editar el texto de las páginas
+Para cambios ocasionales en las páginas del sitio. Descarga el archivo modificado, que hay que
+subir al repositorio. Pensado para uso del equipo de desarrollo.
 
 ## Publicación
 
