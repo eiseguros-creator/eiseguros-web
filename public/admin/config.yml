@@ -5,8 +5,7 @@ backend:
   name: github
   repo: eiseguros-creator/eiseguros-web
   branch: main
-  base_url: https://eiseguros.netlify.app
-  auth_endpoint: /.netlify/functions/auth
+  base_url: https://estrategiasinteligentesdeseguros.com
 
 locale: es
 publish_mode: simple
@@ -15,8 +14,8 @@ publish_mode: simple
 media_folder: "public/assets/img"
 public_folder: "/assets/img"
 
-site_url: https://eiseguros.netlify.app
-display_url: https://eiseguros.netlify.app
+site_url: https://estrategiasinteligentesdeseguros.com
+display_url: https://estrategiasinteligentesdeseguros.com
 logo_url: /assets/brand/logo-eiseguros.png
 
 collections:

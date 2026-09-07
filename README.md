@@ -1,7 +1,7 @@
 # EISeguros — sitio web
 
 Sitio estático de EISeguros · *Estrategias inteligentes de seguros*.
-Dominio previsto: **estrategiasinteligentesdeseguros.com**
+Sitio en vivo: **https://estrategiasinteligentesdeseguros.com**
 
 ---
 
